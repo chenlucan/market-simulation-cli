@@ -3,6 +3,7 @@
 
 #include "common/jsonxx.h"
 
+#include "server/fwd.h"
 #include "server/message.h"
 
 namespace server {

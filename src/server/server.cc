@@ -1,8 +1,8 @@
 #include "server.h"
 
+#include <iostream>
 #include <signal.h>
 #include <utility>
-#include <iostream>
 
 namespace server {
 

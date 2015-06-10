@@ -79,6 +79,10 @@ int main(int argc, char* argv[]) {
     }});
   client.connect();
 
+  auto str = obj.json();
+  str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+  client.write(str);
+
   io_service.run();
 
   return 0;
