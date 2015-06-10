@@ -9,13 +9,14 @@ FLAG = -std=c++11
 CC   = g++
 
 .PHONY: all
-all: generate listen serve
+all: generate listen serve connect
 
 .PHONY : clean
 clean:
 	-rm generate -f
 	-rm listen -f
 	-rm serve -f
+	-rm connect -f
 
 generate:
 	$(CC)  src/config/*.cc src/generate/*.cc -o generate  $(INCL) $(LINK) $(FLAG)
@@ -25,4 +26,7 @@ listen:
 	
 serve:
 	$(CC)  src/common/jsonxx.cc src/config/*.cc  src/server/*.cc -o serve $(INCL) $(LINK) $(FLAG)
+		
+connect:
+	$(CC)  src/common/*.cc src/config/*.cc  src/connect/*.cc -o connect $(INCL) $(LINK) $(FLAG)
 	
