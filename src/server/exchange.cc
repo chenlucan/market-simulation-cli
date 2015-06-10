@@ -64,6 +64,24 @@ void Exchange::OnQuote(std::string datetime, std::string ticker, double bid_pric
   // get all bid orders above ask_price
   // get all ask orders below bid_price
   // fill all these orders
+  auto matched_bid = order_manager_.RemoveBidAbove(ask_price_, ticker_);
+  auto matched_ask = order_manager_.RemoveAskBelow(bid_price_, ticker_);
+
+  for (auto e : matched_bid) {
+    e.status = OrderStatus::OS_Filled;
+    orders_subs_.Publish(e.account, to_json(e));
+    auto trade = trade_manager_.AddTrade(e.account, e.id, ask_price_, e.quantity, e.ticker);
+    trades_subs_.Publish(trade.account, to_json(trade));
+    UpdateStats(trade.price, trade.quantity);
+  }
+
+  for (auto e : matched_ask) {
+    e.status = OrderStatus::OS_Filled;
+    orders_subs_.Publish(e.account, to_json(e));
+    auto trade = trade_manager_.AddTrade(e.account, e.id, bid_price_, e.quantity, e.ticker);
+    trades_subs_.Publish(trade.account, to_json(trade));
+    UpdateStats(trade.price, trade.quantity);
+  }
 }
 
 void Exchange::OnRequest(ReqMarkets  req) {
@@ -103,12 +121,36 @@ void Exchange::OnRequest(ReqOms      req) {
   orders_subs_.Subscribe(req.login_account, req.login_account);
   trades_subs_.Subscribe(req.login_account, req.login_account);
   std::cout << "account[" << req.login_account << "] connected to oms" << std::endl;
+
+  // reply its account name
+  jsonxx::Object obj;
+  obj << "type" << "account";
+  obj << "account" << req.login_account;
+  auto str = obj.json();
+  str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+  connection_manager_.Publish(req.login_account, str);
 }
 
 void Exchange::OnRequest(ReqNewOrder req) {
-  // match with current quotes
-  // matched ? ==> fill order
-  // otherwise keep  it in orderbook
+  auto order = order_manager_.AddOrder(req.login_account, req.price, req.quantity, req.ticker, req.side);
+
+  if (order.ticker == ticker_ && order.side == OrderSide::OS_Buy && order.price >= ask_price_) {
+    order_manager_.RemoveOrder(order.id);
+    order.status = OrderStatus::OS_Filled;
+    orders_subs_.Publish(order.account, to_json(order));
+    auto trade = trade_manager_.AddTrade(order.account, order.id, order.price, order.quantity, order.ticker);
+    trades_subs_.Publish(trade.account, to_json(trade));
+    UpdateStats(trade.price, trade.quantity);
+  } else if (order.ticker == ticker_ && order.side == OrderSide::OS_Sell && order.price <= bid_price_) {
+    order_manager_.RemoveOrder(order.id);
+    order.status = OrderStatus::OS_Filled;
+    orders_subs_.Publish(order.account, to_json(order));
+    auto trade = trade_manager_.AddTrade(order.account, order.id, order.price, order.quantity, order.ticker);
+    trades_subs_.Publish(trade.account, to_json(trade));
+    UpdateStats(trade.price, trade.quantity);
+  } else {
+    orders_subs_.Publish(order.account, to_json(order));
+  }
 }
 
 void Exchange::UpdateStats(double fill_price, int fill_qty) {
