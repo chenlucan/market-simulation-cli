@@ -11,6 +11,10 @@ Project design
 
 Usage
 -------
+Clone the repo, go do the project directory:
+```
+cd market-simulation-cli
+```
 
 For a new terminal session, setup session envrionment by running : 
 ```
