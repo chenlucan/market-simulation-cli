@@ -13,7 +13,11 @@ all: generate
 
 .PHONY : clean
 clean:
-	-rm generate
+	-rm generate -f
+	-rm listen -f
 
 generate:
 	$(CC)  src/generate/*.cc -o generate  $(INCL) $(LINK) $(FLAG)
+	
+listen:
+	$(CC)  src/common/client.cc src/common/jsonxx.cc src/listen/main.cc -o listen $(INCL) $(LINK) $(FLAG)
