@@ -1,0 +1,5 @@
+{
+	"port"  : 9009,
+	"ticker": "1234",
+	"quotes_file": "quotes.txt"
+}

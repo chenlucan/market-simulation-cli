@@ -6,7 +6,10 @@
 #include "common/client.h"
 #include "common/jsonxx.h"
 
+#include "config/config.h"
+
 int main(int argc, char* argv[]) {
+  config::Config config;
   std::string operation = "", option = "";
   if (argc >= 2) {
     operation = argv[1];
@@ -21,8 +24,9 @@ int main(int argc, char* argv[]) {
   }
 
   jsonxx::Object obj;
-  auto port   = 9000;
-  auto ticker = "";
+  auto tree = config.get_tree();
+  auto port   = tree.get("port",   9000);
+  auto ticker = tree.get("ticker", "");
   auto format = 1;
   if (option == "--current") {
     format = 2;
@@ -37,6 +41,7 @@ int main(int argc, char* argv[]) {
     obj << "type" << "trades";
     obj << "account" << option;
   }
+
 
   boost::asio::io_service io_service;
   common::Client client(io_service, "127.0.0.1", port, [=] (std::string data) {
