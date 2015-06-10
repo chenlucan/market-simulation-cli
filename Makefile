@@ -7,8 +7,9 @@ GMOCK_INCLUDE = vendor/gmock-1.7.0/include
 GMOCK_LIB     = vendor/gmock-1.7.0/lib
 
 SRC_INCLUDE = src
+TEST_INCLUDE = test
 
-INCL = -I"$(BOOST_INCLUDE)" -I"$(GTEST_INCLUDE)" -I"$(GMOCK_INCLUDE)" -I"$(SRC_INCLUDE)"  
+INCL = -I"$(BOOST_INCLUDE)" -I"$(GTEST_INCLUDE)" -I"$(GMOCK_INCLUDE)" -I"$(SRC_INCLUDE)" -I"$(TEST_INCLUDE)"  
 LINK = -L"$(BOOST_LIB)" -L"$(GMOCK_LIB)" -lboost_system -lboost_date_time -pthread
 FLAG = -std=c++11
 CC   = g++

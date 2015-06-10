@@ -5,6 +5,7 @@ namespace server {
 
 class Connection;
 
+class ConnectionManagerI;
 class ConnectionManager;
 
 class Exchange;

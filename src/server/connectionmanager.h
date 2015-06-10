@@ -4,12 +4,13 @@
 #include <map>
 
 #include "server/connection.h"
+#include "server/connectionmanageri.h"
 
 namespace server {
 
 /// Manages open connections so that they may be cleanly stopped when the server
 /// needs to shut down.
-class ConnectionManager {
+class ConnectionManager : public ConnectionManagerI {
 public:
   ConnectionManager(const ConnectionManager&) = delete;
   ConnectionManager& operator=(const ConnectionManager&) = delete;
@@ -18,15 +19,15 @@ public:
   ConnectionManager();
 
   /// Add the specified connection to the manager and start it.
-  void Start(connection_ptr c);
+  void Start(connection_ptr c) override;
 
   /// Stop the specified connection.
-  void Stop(connection_ptr c);
+  void Stop(connection_ptr c) override;
 
   /// Stop all connections.
-  void StopAll();
+  void StopAll() override;
 
-  void Publish(std::string name, std::string data);
+  void Publish(std::string name, std::string data) override;
 
 private:
   /// The managed connections.

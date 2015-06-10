@@ -6,7 +6,7 @@
 #include "boost/multi_index/member.hpp"
 #include "boost/multi_index/ordered_index.hpp"
 
-#include <atomic>
+#include <map>
 
 #include "server/fwd.h"
 
@@ -38,7 +38,7 @@ typedef boost::multi_index_container<
 
 class SubManager {
 public:
-  SubManager(ConnectionManager* conn_manager);
+  SubManager(ConnectionManagerI* conn_manager);
   virtual ~SubManager();
 
 public:
@@ -49,8 +49,10 @@ public:
   void Publish(std::string key, std::string data);
 
 private:
-  ConnectionManager *manager_;
-  Subscriptions     subs_;
+  ConnectionManagerI *manager_;
+  Subscriptions      subs_;
+
+  std::map<std::string, int> white_list_;
 };
 
 }
