@@ -9,17 +9,17 @@ Project design
 Usage
 -------
 
-0. for a new terminal session, setup session envrionment by running : 
+For a new terminal session, setup session envrionment by running : 
 ```
 source ./env.sh
 ```
 
-1. build all and run unit test
+Build all and run unit test
 ```
 make all
 ```
 
-2. you may build each individually
+you may build each individually
 ```
 make serve
 make listen
@@ -27,33 +27,35 @@ make connect
 make unit_test
 ```
 
-0. generate quote
+Firstly, generate quote
 ```
 ./generate
 ```
 
-0. start exchange server
+start exchange server
 ```
 ./serve
 ```
 
-0. listen quotes updates
+listen quotes updates
 ```
 ./listen markets # output in json format
 ./listen markets --current # output in table format, refresh on new quote received
 ```
 
-0. listen order updates from <account-name>. If you put server as account-name, you will listen all order updates from server
+listen order updates from <account-name>. If you put server as account-name, you will listen all order updates from server
 ```
-./listen orders <account-name>
-```
-
-0. listen trade updates from account-name. If you put server as account-name, you will listen all trade updates from server
-```
-./listen trades <account-name>
+./listen orders <account-name> # replace <account-name>
+./listen orders server # listens order updates from all accounts
 ```
 
-0. connect to exchange server, you will be assigned an account-name. Submit new order by typing in format, for example
+listen trade updates from account-name. If you put server as account-name, you will listen all trade updates from server
+```
+./listen trades <account-name> # repace <account-name>
+./listen trades server # listens trade updates from all accounts
+```
+
+connect to exchange server, you will be assigned an account-name. Submit new order by typing in format, for example
 
 ```
 ./connect oms
