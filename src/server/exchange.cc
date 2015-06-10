@@ -58,6 +58,27 @@ void Exchange::OnQuote(std::string datetime, std::string ticker, double bid_pric
   // fill all these orders
 }
 
+
+void Exchange::OnRequest(ReqMarkets  req) {
+}
+
+void Exchange::OnRequest(ReqOrders   req) {
+
+}
+
+void Exchange::OnRequest(ReqTrades   req) {
+
+}
+
+void Exchange::OnRequest(ReqOms      req) {
+
+}
+
+void Exchange::OnRequest(ReqNewOrder req) {
+
+}
+
+
 void Exchange::UpdateStats(double fill_price, int fill_qty) {
   last_     = fill_price;
   turnover_ += fill_price * fill_qty;

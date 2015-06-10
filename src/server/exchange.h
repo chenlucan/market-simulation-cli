@@ -5,11 +5,12 @@
 
 #include "server/connectionmanager.h"
 #include "server/quotesreader.h"
+#include "server/requesthandler.h"
 #include "server/server.h"
 
 namespace server {
 
-class Exchange : public QuotesListenerI {
+class Exchange : public QuotesListenerI, public RequestListenerI {
 public:
 	Exchange(boost::asio::io_service& io_service, bp::ptree config);
 	virtual ~Exchange();
@@ -20,6 +21,14 @@ public:
 public:
 	// QuotesListenerI interface
 	void OnQuote(std::string datetime, std::string ticker, double bid_price, double ask_price, int bid_qty, int ask_qty) override;
+
+public:
+  // RequestListenerI interface
+  void OnRequest(ReqMarkets  req) override;
+  void OnRequest(ReqOrders   req) override;
+  void OnRequest(ReqTrades   req) override;
+  void OnRequest(ReqOms      req) override;
+  void OnRequest(ReqNewOrder req) override;
 
 private:
 	void UpdateStats(double fill_price, int fill_qty);
