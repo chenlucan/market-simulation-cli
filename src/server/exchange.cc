@@ -25,11 +25,14 @@ Exchange::Exchange(boost::asio::io_service& io_service, bp::ptree config)
 Exchange::~Exchange() {}
 
 void Exchange::Start() {
+  server_.Start();
   quotes_reader_.Start();
 }
 
 void Exchange::Stop() {
   quotes_reader_.Stop();
+  connection_manager_.StopAll();
+  server_.Stop();
 }
 
 void Exchange::OnQuote(std::string datetime, std::string ticker, double bid_price, double ask_price, int bid_qty, int ask_qty) {
