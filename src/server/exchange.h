@@ -42,6 +42,9 @@ private:
   ConnectionManager connection_manager_;
   Server            server_;
 
+  // request parser
+  RequestHandler    req_handler_;
+
   // manage client subscriptions
   SubManager quotes_subs_;
   SubManager orders_subs_;
