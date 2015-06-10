@@ -1,7 +1,9 @@
+#include "config/config.h"
 
 #include "generate/bmgenerator.h"
 
 int main(int argc, char* argv[]) {
-  generate::BMGenerator::generate("quotes.txt");
+  config::Config config;
+  generate::BMGenerator::generate(config.get_tree().get("quotes_file", "quotes.txt"));
 }
 

@@ -17,7 +17,7 @@ clean:
 	-rm listen -f
 
 generate:
-	$(CC)  src/generate/*.cc -o generate  $(INCL) $(LINK) $(FLAG)
+	$(CC)  src/config/*.cc src/generate/*.cc -o generate  $(INCL) $(LINK) $(FLAG)
 	
 listen:
-	$(CC)  src/common/client.cc src/common/jsonxx.cc src/listen/main.cc -o listen $(INCL) $(LINK) $(FLAG)
+	$(CC)  src/common/*.cc src/config/*.cc  src/listen/main.cc -o listen $(INCL) $(LINK) $(FLAG)
