@@ -5,6 +5,9 @@
 
 #include <string>
 
+#include "server/connection.h"
+#include "server/connectionmanager.h"
+
 namespace server {
 /// The top-level class of the HTTP server.
 class Server {
@@ -14,7 +17,7 @@ public:
 
   /// Construct the server to listen on the specified TCP address and port, and
   /// serve up files from the given directory.
-  Server(const std::string& address, int port, boost::asio::io_service& io_service);
+  Server(const std::string& address, int port, boost::asio::io_service& io_service, ConnectionManager* connection_manager, ConnMessageCB msgcb);
 
   void Start();
   void Stop();
@@ -35,6 +38,10 @@ private:
 
   std::string ip_;
   std::string port_;
+
+  ConnMessageCB message_cb_;
+
+  ConnectionManager *connection_manager_;
 
   int connection_id_;
 };

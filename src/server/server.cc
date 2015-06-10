@@ -1,15 +1,19 @@
 #include "server.h"
+
 #include <signal.h>
 #include <utility>
 #include <iostream>
+
 namespace server {
 
-Server::Server(const std::string& address, int port, boost::asio::io_service& io_service)
+Server::Server(const std::string& address, int port, boost::asio::io_service& io_service, ConnectionManager* connection_manager, ConnMessageCB msgcb)
   : io_service_(io_service),
     acceptor_(io_service_),
     socket_(io_service_),
     ip_(address),
     port_(std::to_string(port)),
+    message_cb_(msgcb),
+    connection_manager_(connection_manager),
     connection_id_(0) {}
 
 void Server::Start() {
@@ -37,7 +41,10 @@ void Server::do_accept() {
         return;
       }
       if (!ec) {
-        // new conneciton comes in
+        connection_manager_->Start(std::make_shared<Connection>(std::to_string(connection_id_++), std::move(socket_), connection_manager_,
+          [=] (std::string connection_name, std::string data) {
+            message_cb_(connection_name, data);
+        }));
       }
 
       do_accept();
