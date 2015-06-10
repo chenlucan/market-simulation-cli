@@ -139,14 +139,14 @@ void Exchange::OnRequest(ReqNewOrder req) {
     order_manager_.RemoveOrder(order.id);
     order.status = OrderStatus::OS_Filled;
     orders_subs_.Publish(order.account, to_json(order));
-    auto trade = trade_manager_.AddTrade(order.account, order.id, order.price, order.quantity, order.ticker);
+    auto trade = trade_manager_.AddTrade(order.account, order.id, ask_price_, order.quantity, order.ticker);
     trades_subs_.Publish(trade.account, to_json(trade));
     UpdateStats(trade.price, trade.quantity);
   } else if (order.ticker == ticker_ && order.side == OrderSide::OS_Sell && order.price <= bid_price_) {
     order_manager_.RemoveOrder(order.id);
     order.status = OrderStatus::OS_Filled;
     orders_subs_.Publish(order.account, to_json(order));
-    auto trade = trade_manager_.AddTrade(order.account, order.id, order.price, order.quantity, order.ticker);
+    auto trade = trade_manager_.AddTrade(order.account, order.id, bid_price_, order.quantity, order.ticker);
     trades_subs_.Publish(trade.account, to_json(trade));
     UpdateStats(trade.price, trade.quantity);
   } else {
