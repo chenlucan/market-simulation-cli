@@ -2,9 +2,11 @@ Project design
 -------
 0. Use only one thread for all requests (quotes reading, handling tcp connection, parsing client requests). All operations are done in async way, so that thread is not blocked. Use boost asio for async operations.
 0. When user connects to oms, server assigns account name to him.
+0. ports, ticker name and quotes file name are configurable. Please find confiuration file src/config/config.json
+0. I have a few assumptions for the Brownian Motion, matching algorithm, order book keeping, tick size, etc. Please find the details in the report.
 
 
-Build
+Usage
 -------
 
 0. for a new terminal session, setup session envrionment by running : 
@@ -12,17 +14,22 @@ Build
 source ./env.sh
 ```
 
-0. build all and run unit test
+1. build all and run unit test
 ```
 make all
 ```
 
-0. you may build each individually
+2. you may build each individually
 ```
 make serve
 make listen
 make connect
 make unit_test
+```
+
+0. generate quote
+```
+./generate
 ```
 
 0. start exchange server
