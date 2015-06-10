@@ -9,7 +9,7 @@ FLAG = -std=c++11
 CC   = g++
 
 .PHONY: all
-all: generate
+all: generate listen serve
 
 .PHONY : clean
 clean:
