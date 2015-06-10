@@ -2,18 +2,24 @@
 
 #include "config/config.h"
 
-#include "server/server.h"
+#include "server/exchange.h"
 
 int main() {
   boost::asio::io_service io_service;
   config::Config config;
 
-  server::ConnectionManager manager;
-  server::Server s("127.0.0.1", 9000, io_service, &manager, [](std::string, std::string){});
-  s.Start();
+  boost::asio::signal_set signals(io_service);
+  signals.add(SIGINT);
+  signals.add(SIGTERM);
+
+  server::Exchange exchange(io_service, config.get_tree());
+  exchange.Start();
+
+  signals.async_wait([&](boost::system::error_code /*ec*/, int /*signo*/) {
+    exchange.Stop();
+  });
 
   io_service.run();
-  s.Stop();
 
   return 0;
 }

@@ -8,6 +8,9 @@ namespace server {
 
 Exchange::Exchange(boost::asio::io_service& io_service, bp::ptree config)
   : quotes_reader_(io_service, config, this),
+    connection_manager_(),
+    server_("127.0.0.1", config.get("port", 9000), io_service, &connection_manager_,
+        [=] (std::string connection_name, std::string data) { }),
     ticker_(config.get("ticker", "601398")),
     bid_price_(0),
     ask_price_(0),

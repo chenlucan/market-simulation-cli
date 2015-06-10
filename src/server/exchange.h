@@ -3,7 +3,9 @@
 
 #include "config/fwd.h"
 
+#include "server/connectionmanager.h"
 #include "server/quotesreader.h"
+#include "server/server.h"
 
 namespace server {
 
@@ -25,6 +27,10 @@ private:
 private:
 	// read quotes
 	QuotesReader      quotes_reader_;
+
+  // manage tcp connections
+  ConnectionManager connection_manager_;
+  Server            server_;
 
   std::string ticker_;
   double      bid_price_;
