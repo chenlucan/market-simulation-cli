@@ -15,9 +15,14 @@ all: generate
 clean:
 	-rm generate -f
 	-rm listen -f
+	-rm serve -f
 
 generate:
 	$(CC)  src/config/*.cc src/generate/*.cc -o generate  $(INCL) $(LINK) $(FLAG)
 	
 listen:
 	$(CC)  src/common/*.cc src/config/*.cc  src/listen/main.cc -o listen $(INCL) $(LINK) $(FLAG)
+	
+serve:
+	$(CC)  src/config/*.cc  src/server/*.cc -o serve $(INCL) $(LINK) $(FLAG)
+	
