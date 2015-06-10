@@ -47,6 +47,7 @@ void Exchange::OnQuote(std::string datetime, std::string ticker, double bid_pric
   ask_qty_    = ask_qty;
 
   jsonxx::Object obj;
+  obj << "type"   << "quote";
   obj << "time"   << datetime;
   obj << "ticker" << ticker_;
   obj << "bid_price" << std::to_string(bid_price_);

@@ -52,7 +52,9 @@ int main(int argc, char* argv[]) {
       std::cout << "my account name is [" << account << "]" << std::endl;
     } else if (req == "order") {
       std::cout << "order update: " << data << std::endl;
-    }
+    } else if (req == "trade") {
+       std::cout << "trade update: " << data << std::endl;
+     }
   });
   client.connect();
 

@@ -24,6 +24,7 @@ std::string to_json(Order order) {
 
 std::string to_json(Trade trade) {
   jsonxx::Object obj;
+  obj << "type"     << "trade";
   obj << "id"       << trade.id;
   obj << "orderid"  << trade.orderid;
   obj << "account"  << trade.account;

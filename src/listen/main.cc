@@ -72,11 +72,26 @@ int main(int argc, char* argv[]) {
 
   boost::asio::io_service io_service;
   common::Client client(io_service, "127.0.0.1", port, [=] (std::string data) {
-    if (format == 1) {
-      Formatter::to_json(data);
-    } else if (format == 2) {
-      Formatter::to_table(data);
-    }});
+    jsonxx::Object obj;
+    if (!obj.parse(data)) {
+      std::cout << "wrong json format order received"<< std::endl;
+      return;
+    }
+
+    auto req = obj.get<jsonxx::String>("type", "");
+    if (req == "quote") {
+      if (format == 1) {
+        Formatter::to_json(data);
+      } else if (format == 2) {
+        Formatter::to_table(data);
+      }
+    } else if (req == "order") {
+      std::cout << "order update: " << data << std::endl;
+    } else if (req == "trade") {
+      std::cout << "trade update: " << data << std::endl;
+    }
+  });
+
   client.connect();
 
   auto str = obj.json();
