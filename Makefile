@@ -24,5 +24,5 @@ listen:
 	$(CC)  src/common/*.cc src/config/*.cc  src/listen/main.cc -o listen $(INCL) $(LINK) $(FLAG)
 	
 serve:
-	$(CC)  src/config/*.cc  src/server/*.cc -o serve $(INCL) $(LINK) $(FLAG)
+	$(CC)  src/common/jsonxx.cc src/config/*.cc  src/server/*.cc -o serve $(INCL) $(LINK) $(FLAG)
 	
